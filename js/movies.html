@@ -28,6 +28,7 @@
             let output = '';
             for(i=0;i<moives.length;i++){
                 output += `<div class='article'>
+                    <img src='${moives[i]['show'].image.medium}' alt='pic' />
                     <h3>premiered :  ${moives[i]['show'].premiered}</h3>
                     <p>category : ${moives[i]['show'].name}</p>
                     <p>type : ${moives[i]['show'].type}</p>
