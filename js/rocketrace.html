@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo</title>
+    <link rel="icon" href="../favicon.gif">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+</head>
+<body>
+    <!-- <img id="ship1" class="ship" src="../img/ship.gif"/>
+    <img id="ship2" class="ship" src="../img/ship.gif"/> -->
+    
+    <style>
+        body{
+            background-image: url('https://i.insider.com/5dfab6ce855cc20c514e79f6?width=1000&format=jpeg&auto=webp');
+        }
+        .ship{
+            position:absolute;
+            left:5; top:5;  
+            transition: left 1s;          
+        }
+        #ship1{
+            filter:hue-rotate(10deg);
+        }
+    </style>
+    <script>
+        //event listeners
+        
+        let timer=null, pagewidth=$(document).width();
+
+        function* generateDistance(){
+            while(1){
+                let distance = 10 + Math.floor(Math.random()*100)
+                yield distance;
+            }
+        }
+
+        function changeShipPosition(ship){
+            return new Promise((resolve,reject)=>{
+                let x = parseInt(ship.offset().left);            
+                let distance = generateDistance().next().value;                
+                x += distance;
+                if(x<=(pagewidth-100))
+                    resolve(x);
+                else            
+                    reject(x);
+            });
+        }
+
+        let endrace = (ship) => {
+            clearInterval(timer);
+            let shipid = ship.attr('id');
+            $(".ship").hide();
+            $(ship).show();
+            alert(shipid+" won the race");
+        }
+
+        let moveship = (ship) => {            
+            changeShipPosition(ship)
+            .then((x)=> ship.css({left:x}))
+            .catch((x)=> endrace(ship));           
+        }
+
+        function makeships(n){
+            for(i=1;i<=n;i++){
+                let html = `<img id="ship${i}" style="top:${i*50}px; filter:hue-rotate(${i*30}deg); "class="ship" src="./rocket.png"/width="500" height="400">`;
+                $(document.body).append(html);
+            }
+        }
+
+       
+        $(document).ready(() => {
+            
+            let numberShips = prompt("How many ships you want?","2");
+            makeships(numberShips);
+            
+                timer = setInterval(() => {
+                    for(let i=1;i<=numberShips;i++) 
+                    {
+                        let ship = $(`#ship${i}`)
+                        moveship(ship);               
+                    }
+                },1000);        
+        })
+    </script>
+</body>
+</html>
