@@ -28,13 +28,12 @@ function TodoApp() {
 
   const taskCompleted = (e, id) => {
     e.preventDefault();
-    //let's find index of element
     const element = tasklist.findIndex((elem) => elem.id == id);
 
-    //copy array into new variable
+  
     const newTaskList = [...tasklist];
 
-    //edit our element
+   
     newTaskList[element] = {
       ...newTaskList[element],
       isCompleted: true,
@@ -51,7 +50,7 @@ function TodoApp() {
         id="text"
         onChange={(e) => handleChange(e)}
         placeholder="Add task here..."
-      />
+      <br/>
       <button className="add-btn" onClick={AddTask}>
         Add
       </button>
